@@ -1,0 +1,44 @@
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&display=swap");
+@import "tailwindcss";
+
+@theme {
+  /* Warm boutique palette — deliberately not the original's blue/navy SaaS look */
+  --color-cream: #fdf9f3;
+  --color-cream-deep: #f3e8dc;
+
+  --color-ink: #241a1f;
+  --color-ink-soft: #7a6b70;
+
+  --color-plum: #6b2545;
+  --color-plum-deep: #4a1830;
+  --color-plum-tint: #f3dce3;
+
+  --color-gold: #c89b3c;
+  --color-gold-deep: #a67f2c;
+  --color-gold-tint: #f8edd4;
+
+  --color-forest: #3f7d58;
+  --color-forest-tint: #e5f2ea;
+
+  --color-brick: #b23a48;
+  --color-brick-tint: #f9e3e5;
+
+  --color-line: rgba(36, 26, 31, 0.1);
+
+  --shadow-card: 0 18px 44px -20px rgba(74, 24, 48, 0.18);
+  --shadow-card-lg: 0 28px 60px -22px rgba(74, 24, 48, 0.24);
+
+  --font-display: "Fraunces", serif;
+  --font-sans: "Inter", sans-serif;
+}
+
+body {
+  background: var(--color-cream);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-plum);
+  outline-offset: 2px;
+}
