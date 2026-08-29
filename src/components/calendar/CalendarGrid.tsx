@@ -1,4 +1,5 @@
-import type { Holiday } from "@/lib/holidays";
+// import type { Holiday } from "@/lib/holidays";
+import type { Holiday } from "@/lib/sriLankaHolidays";
 import type { Occasion, UserSpecialDate } from "@/lib/types";
 
 const MONTH_NAMES = [

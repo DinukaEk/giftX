@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { supabase } from "@/lib/supabaseClient";
 import { createTimeoutSignal, friendlyError } from "@/lib/supabaseFetch";
-import { fetchHolidays, type Holiday } from "@/lib/holidays";
+import { getHolidaysForYear } from "@/lib/sriLankaHolidays";
 import { CalendarGrid, type OccasionLike } from "@/components/calendar/CalendarGrid";
 import { OccasionModal } from "@/components/calendar/OccasionModal";
 import { MyDatesManager } from "@/components/calendar/MyDatesManager";
@@ -19,11 +19,13 @@ export function CalendarPage() {
 
   const [occasions, setOccasions] = useState<Occasion[]>([]);
   const [myDates, setMyDates] = useState<UserSpecialDate[]>([]);
-  const [holidays, setHolidays] = useState<Holiday[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const [openOccasion, setOpenOccasion] = useState<OccasionLike | null>(null);
+
+  // Local dataset, not a network call — instant, no loading state needed.
+  const holidays = useMemo(() => getHolidaysForYear(viewYear), [viewYear]);
 
   async function loadMyDates() {
     if (!user) {
@@ -74,18 +76,6 @@ export function CalendarPage() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
-
-  // Holidays are fetched per year and cached in state — only refetched when
-  // navigating to a year that hasn't been loaded yet.
-  useEffect(() => {
-    let cancelled = false;
-    fetchHolidays(viewYear).then((data) => {
-      if (!cancelled) setHolidays(data);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [viewYear]);
 
   function prevMonth() {
     if (viewMonth === 0) {
