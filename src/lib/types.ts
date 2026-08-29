@@ -5,24 +5,6 @@ export type FulfillmentType = "in_stock" | "pre_order";
 export type OrderStatus = "placed" | "packed" | "confirmed" | "disputed";
 export type DeliveryMethod = "delivery" | "pickup";
 export type DeliveryFlexibility = "flexible" | "exact";
-export type OrderWithItems = Order & {
-  order_items: OrderItem[];
-  stores: Pick<Store, "store_name" | "seller_id"> | null;
-};
-export type StockRequestStatus = "open" | "responded" | "closed";
-
-export interface StockRequest {
-  id: string;
-  listing_id: string | null;
-  listing_name_snapshot: string | null;
-  store_id: string;
-  buyer_id: string;
-  requested_quantity: number;
-  message: string | null;
-  status: StockRequestStatus;
-  seller_reply: string | null;
-  created_at: string;
-}
 
 export interface Profile {
   id: string;
@@ -89,6 +71,11 @@ export interface Order {
   updated_at: string;
 }
 
+export type OrderWithItems = Order & {
+  order_items: OrderItem[];
+  stores: Pick<Store, "store_name" | "seller_id"> | null;
+};
+
 export interface OrderItem {
   id: string;
   order_id: string;
@@ -117,6 +104,21 @@ export interface Recipient {
   created_at: string;
 }
 
+export type StockRequestStatus = "open" | "responded" | "closed";
+
+export interface StockRequest {
+  id: string;
+  listing_id: string | null;
+  listing_name_snapshot: string | null;
+  store_id: string;
+  buyer_id: string;
+  requested_quantity: number;
+  message: string | null;
+  status: StockRequestStatus;
+  seller_reply: string | null;
+  created_at: string;
+}
+
 export interface Occasion {
   id: string;
   title: string;
@@ -134,7 +136,8 @@ export interface UserSpecialDate {
   day: number;
 }
 
-/** One recipient's worth of a listing in the gift cart. */
+/** One recipient's worth of a listing in the gift cart — this becomes one
+ *  order at checkout, even if several cart items share a store. */
 export interface CartItem {
   cartItemId: string;
   listingId: string;
@@ -143,7 +146,10 @@ export interface CartItem {
   photo: string | null;
   storeId: string;
   storeName: string;
+  storeOffersDelivery: boolean;
+  storeOffersPickup: boolean;
   fulfillmentType: FulfillmentType;
+  recipientId: string | null;
   recipientName: string;
   recipientPhone: string;
   recipientAddress: string;
